@@ -1,6 +1,7 @@
 import { useState } from "react"
 
 
+
 const timeNow = new Date(Date.now()).toString();
 export default function Todo ({ title, content, author }) {
     const [complete, setComplete] = useState('');
@@ -13,18 +14,28 @@ export default function Todo ({ title, content, author }) {
     <i>Written by <b>{author}</b></i>
     <div>Created on: {timeNow}</div>
     <div>
-    <input type="checkbox" value={false} onChange={(event)=>setComplete(event.target.value)} onClick={handleComplete()}/>
+    <label id={title}></label>    
+    <input type="checkbox" value={false} onChange={(event)=>setComplete(event.target.value)} onClick={(event)=>{
+        if(!complete){
+            document.getElementById(title.toString()).innerHTML="Completed on: "+new Date(Date.now()).toString();
+            setComplete(true);
+        }
+        else{
+            document.getElementById(title.toString()).innerHTML="";
+            setComplete(false);
+        }
+        
+        }
+        
+
+        
+        }/>
+    
     </div>
-    <div id = "id2">abc</div>
+    
     
     </div>
     )
     }
 
-    function handleComplete(){
-        var el = document.getElementById("id2");
-        el.innerHTML = "hiiii";
-        return false;
-    }
-    
     
