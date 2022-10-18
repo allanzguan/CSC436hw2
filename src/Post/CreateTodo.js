@@ -1,19 +1,21 @@
 import { useState } from "react"
 
-export default function CreateTodo ({user, todos, setTodos}) {
-    const [title, setTitle] = useState("");
+export default function CreateTodo ({user, todos, dispatch}) {
+    const [ title, setTitle] = useState("");
     const [ content, setContent] = useState("");
-
+    
 
     return (
     <form onSubmit={e => {
         e.preventDefault();
-        const newTodo = {
-            title,
-            content,
-            author: user,
-        };
-        setTodos([newTodo, ...todos]);
+        dispatch({type:"CREATE_TODO", title, content, author: user, dispatch});
+        
+//        const newTodo = {
+//            title,
+//            content,
+//            author: user,
+//        };
+//        setTodos([newTodo, ...todos]);
     }}>
         
         <div>Author: <b>{user}</b></div>

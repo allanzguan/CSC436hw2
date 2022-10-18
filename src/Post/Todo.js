@@ -3,8 +3,9 @@ import { useState } from "react"
 
 
 const timeNow = new Date(Date.now()).toString();
-export default function Todo ({ title, content, author }) {
-    const [complete, setComplete] = useState('');
+export default function Todo ({ title, content, author, dispatch }) {
+    //export default function Todo ({ title, content, author }) {
+    const [complete, setComplete] = useState(false);
   
     return (
     <div>
@@ -15,22 +16,24 @@ export default function Todo ({ title, content, author }) {
     <div>Created on: {timeNow}</div>
     <div>
     <label id={title}></label>    
-    <input type="checkbox" value={false} onChange={(event)=>setComplete(event.target.value)} onClick={(event)=>{
+
+    <input type="checkbox" value={false} onChange={(event)=>setComplete(event.target.value)} onClick={(event)=>{ event.preventDefault();
         if(!complete){
-            document.getElementById(title.toString()).innerHTML="Completed on: "+new Date(Date.now()).toString();
+            dispatch({type: "TOGGLE_TODO", complete, title})
             setComplete(true);
         }
         else{
-            document.getElementById(title.toString()).innerHTML="";
+            dispatch({type: "TOGGLE_TODO", complete, title})
             setComplete(false);
-        }
+        }        
         
-        }
+    }
+    }/>
+    <br/>
+    <input type="submit" value="Delete" onClick={(event)=>{ event.preventDefault();
         
-
-        
-        }/>
-    
+        dispatch({type: "DELETE_TODO", title})
+    }} />
     </div>
     
     
