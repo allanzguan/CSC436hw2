@@ -14,14 +14,17 @@ function userReducer(state, action) {
   
     switch (action.type) {
       case "CREATE_TODO":
-        
         const newTodo = {
           title: action.title,
           content: action.content,
           author: action.author,
           dispatch: action.dispatch,
+          id: action.id,
+          time: action.timeNow,
         };
         return [newTodo, ...state];
+      case "FETCH_TODO":
+          return action.todos;
       case "TOGGLE_TODO":
         //state.setComplete(true);
         if(!action.complete){
