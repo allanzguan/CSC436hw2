@@ -1,17 +1,20 @@
 function userReducer(state, action) {
     switch (action.type) {
       case "LOGIN":
+        return {
+          username: action.username,
+          access_token: action.access_token,
+          };          
       case "REGISTER":
         return action.username;
       case "LOGOUT":
-        return "";
+        return null;
       default:
         return state;
     }
   }
   
   function todoReducer(state, action) {
-  
     switch (action.type) {
       case "CREATE_TODO":
         const newTodo = {
@@ -42,7 +45,9 @@ function userReducer(state, action) {
           ...state.slice(index + 1)
         ];
         return stateTemp;
-
+      case "CLEAR_TODO":
+          return [];
+        
       default:
         return state;
     }

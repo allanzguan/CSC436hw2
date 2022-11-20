@@ -13,21 +13,26 @@ export default function Login() {
     function handlePassword (evt) { setPassword(evt.target.value)}
 
     const [user, login] = useResource((username, password) => ({
-        url: "/login",
+        url: "auth/login",
         method: "post",
-        data: { email: username, password },
+        data: { username, password },
         }));
-
+    
     useEffect(() => {
-        if (user) {
-        if (user?.data?.user) {
-        setLoginFailed(false);
-        dispatch({ type: "LOGIN", username: user.data.user.email });
+        if (user && user.isLoading === false && (user.data || user.error)) {
+        if (user.error) {
+            setLoginFailed(true);
         } else {
-        setLoginFailed(true);
+        setLoginFailed(false);
+        dispatch({
+        type: "LOGIN",
+        username: user.data.username    ,
+        access_token: user.data.access_token,
+        });
         }
         }
         }, [user]);
+        
 
     //{loginFailed && <span style={{ color: "red"}}>Invalid username or password</span>}
     return (

@@ -4,7 +4,7 @@ import { useResource } from 'react-request-hook'
 
 
 const timeNow = new Date(Date.now()).toString();
-export default function Todo ({ title, content, author, dispatch, id, time }) {
+export default function Todo ({ title, content, author, user, dispatch, id, time }) {
     //export default function Todo ({ title, content, author }) {
     const [complete, setComplete] = useState(false);
 
@@ -13,12 +13,14 @@ export default function Todo ({ title, content, author, dispatch, id, time }) {
     const [todos, deleteTodo] = useResource(() => ({
         url: "/todos/"+id,
         method: "DELETE",
+        headers: {"Authorization": `${user.access_token}`},
         data: id,
       }));
 
     const [times, updateTodo] = useResource(() => ({
         url: "/todos/"+id,
         method: "PATCH",
+        headers: {"Authorization": `${user.access_token}`},
         data: {"completedTime": timeNow},
     }));
   

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { v4 as uuidv4} from "uuid"; 
 import { useContext } from "react";
 import { StateContext } from "../context";
@@ -13,11 +13,25 @@ export default function CreateTodo () {
     const timeNow = new Date(Date.now()).toString();
     const completedTime = "";
 
-    const [todos, createTodo] = useResource(({title, content, author}) => ({
+    const [todos, createTodo] = useResource(({title, content, author, user}) => ({
         url: "/todos",
         method: "post",
+        headers: {"Authorization": `${state.user.access_token}`},
         data: {title, content, author, timeNow, completedTime},
       }));
+
+      useEffect(() => {
+        if (todos.isLoading === false && todos.data) {
+        dispatch({
+        type: "CREATE_POST",
+        title: todos.data.title,
+        content: todos.data.content,
+        id: todos.data.id,
+        author: user.username,
+        });
+        }
+        }, [todos]);
+        
 
     return (
     <form onSubmit={e => {
@@ -36,7 +50,7 @@ export default function CreateTodo () {
 //        setTodos([newTodo, ...todos]);
     }}>
         
-        <div>Author: <b>{user}</b></div>
+        <div>Author: <b>{user.username}</b></div>
         <div>
             <label htmlFor="create-title">Title:</label>
             <input type="text" name="create-title" id="create-title" value ={title} onChange={(event) => setTitle(event.target.value)}/>
